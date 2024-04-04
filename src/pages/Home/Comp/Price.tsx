@@ -24,6 +24,9 @@ const Comp: React.FC<Props> = ({ id, name, data_type }) => {
     currency: '-',
   });
 
+  const isUp = state.percent > 0;
+  const fixedNum = state.current > 1 ? 2 : 6;
+
   useEffect(() => {
     const fn = async () => {
       const urlMap = {
@@ -60,13 +63,18 @@ const Comp: React.FC<Props> = ({ id, name, data_type }) => {
   }, []);
 
   return (
-    <div className={styles.price}>
+    <div className={styles.price + ' ' + (isUp ? styles.up : styles.down)}>
       <div className={styles.name}>{name}</div>
       <div className={styles.current}>
-        <span>{state.current.toFixed(2)}</span>
+        <span>{state.current.toFixed(fixedNum)}</span>
         <span className={styles.currency}>{state.currency}</span>
       </div>
-      <div className={styles.percent}>{state.percent.toFixed(2)}%</div>
+
+      <div className={styles.percent}>
+        {isUp && '+'}
+        {state.change.toFixed(2)}&nbsp;&nbsp;({isUp && '+'}
+        {state.percent.toFixed(2)}% )
+      </div>
     </div>
   );
 };
